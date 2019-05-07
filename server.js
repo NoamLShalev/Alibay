@@ -457,6 +457,14 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
     });
 });
 
+app.get("/logout", (req, res) => {
+  let sessionId = req.cookies.sid;
+
+  db.collection("sessions").deleteOne({ sessionId: sessionId });
+
+  res.send(JSON.stringify({ success: true }));
+});
+
 app.listen(4000, () => {
   console.log("the server is launched on port: 4000");
 });
