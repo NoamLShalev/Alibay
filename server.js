@@ -9,7 +9,7 @@ let upload = multer({
   dest: __dirname + "/uploads/"
 });
 app.use("/images", express.static(__dirname + "/uploads/"));
-app.use(cors({ credentials: true, origin: "http://locahost:3000" }));
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(cookieParser());
 let url =
   "mongodb+srv://noam:alibay@practice-project-mqqcj.mongodb.net/test?retryWrites=true";
@@ -163,7 +163,6 @@ app.post("/item-details-coffee", upload.none(), (req, res) => {
 
 app.post("/item-details-tea", upload.none(), (req, res) => {
   let itemId = req.body.itemId;
-  let sellerId = req.body.sellerId;
   let ObjectID = mongo.ObjectID;
 
   db.collection("tea-items")
@@ -179,7 +178,6 @@ app.post("/item-details-tea", upload.none(), (req, res) => {
               res.send(
                 JSON.stringify({
                   success: true,
-                  seller: { username: seller.username, id: seller._id },
                   item: item,
                   reviews: resultReviews
                 })
@@ -426,5 +424,5 @@ app.get("/cart", (req, res) => {
 });
 
 app.listen(4000, () => {
-  console.log("4000");
+  console.log("the server is launched on port: 4000");
 });
