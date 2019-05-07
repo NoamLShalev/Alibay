@@ -4,6 +4,7 @@ let cors = require("cors");
 let cookieParser = require("cookie-parser");
 let MongoClient = require("mongodb").MongoClient;
 let mongo = require("mongodb");
+let stripe = require("stripe")("sk_test_x5gHDTvOcukvjpirrZwgbx5X00ovsBO0zU");
 let app = express();
 let upload = multer({
   dest: __dirname + "/uploads/"
@@ -32,7 +33,6 @@ app.post("/signup", upload.none(), (req, res) => {
   db.collection("users")
     .findOne({ username: username })
     .then(user => {
-      console.log(user);
       if (user !== null) {
         res.send(JSON.stringify({ success: false }));
         return;
@@ -135,7 +135,6 @@ app.post("/seller-details", upload.none(), (req, res) => {
 
 app.post("/item-details-coffee", upload.none(), (req, res) => {
   let itemId = req.body.itemId;
-  let sellerId = req.body.sellerId;
   let ObjectID = mongo.ObjectID;
 
   db.collection("coffee-items")
@@ -151,7 +150,6 @@ app.post("/item-details-coffee", upload.none(), (req, res) => {
               res.send(
                 JSON.stringify({
                   success: true,
-                  seller: { username: seller.username, id: seller._id },
                   item: item,
                   reviews: resultReviews
                 })
@@ -289,8 +287,6 @@ app.get("/search-item-tea", (req, res) => {
     });
 });
 
-// app.post("/buy-item", upload.none(), (req, res) => {});
-
 app.post("/add-review-seller", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
@@ -420,6 +416,23 @@ app.get("/cart", (req, res) => {
               res.send(JSON.stringify({ success: true, items: items }));
             });
         });
+    });
+});
+
+app.post("/save-stripe-token", upload.none(), (req, res) => {
+  console.log(req.body);
+  let token = req.body.stripeToken;
+  console.log(token);
+  // let price = request.body.amount;
+  stripe.charges
+    .create({
+      amount: 300,
+      currency: "usd",
+      description: "Example charge",
+      source: token
+    })
+    .then(response => {
+      console.log(response);
     });
 });
 
