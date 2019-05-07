@@ -81,6 +81,17 @@ app.post("/login", upload.none(), (req, res) => {
     });
 });
 
+app.get("/login-check", (req, res) => {
+  let sessionId = req.cookies.sid;
+  db.collection("sessions")
+    .findOne({ sessionId: sessionId })
+    .then(user => {
+      if (user !== null) {
+        res.send(JSON.stringify({ success: true }));
+      }
+    });
+});
+
 app.get("/coffee", (req, res) => {
   db.collection("coffee-items")
     .find({})
