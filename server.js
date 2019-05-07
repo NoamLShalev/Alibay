@@ -440,17 +440,21 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
                   images: [item.image]
                 };
               });
-              stripe.checkout.sessions
-                .create({
-                  payment_method_types: ["card"],
-                  line_items: items,
-                  success_url: "http://locahost:3000/",
-                  cancel_url: "http://localhost:3000/"
-                })
-                .then(session => {
-                  res.send(
-                    JSON.stringify({ success: true, sessionId: session.id })
-                  );
+              db.collection("cart")
+                .deleteMany({ userId: userId })
+                .then(result => {
+                  stripe.checkout.sessions
+                    .create({
+                      payment_method_types: ["card"],
+                      line_items: items,
+                      success_url: "http://locahost:3000/",
+                      cancel_url: "http://localhost:3000/"
+                    })
+                    .then(session => {
+                      res.send(
+                        JSON.stringify({ success: true, sessionId: session.id })
+                      );
+                    });
                 });
             });
         });
