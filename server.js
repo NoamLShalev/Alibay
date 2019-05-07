@@ -140,21 +140,17 @@ app.post("/item-details-coffee", upload.none(), (req, res) => {
   db.collection("coffee-items")
     .findOne({ _id: new ObjectID(itemId) })
     .then(item => {
-      db.collection("users")
-        .findOne({ _id: new ObjectID(sellerId) })
-        .then(seller => {
-          db.collection("reviews-items")
-            .find({ itemId: itemId })
-            .toArray((err, resultReviews) => {
-              if (err) throw err;
-              res.send(
-                JSON.stringify({
-                  success: true,
-                  item: item,
-                  reviews: resultReviews
-                })
-              );
-            });
+      db.collection("reviews-items")
+        .find({ itemId: itemId })
+        .toArray((err, resultReviews) => {
+          if (err) throw err;
+          res.send(
+            JSON.stringify({
+              success: true,
+              item: item,
+              reviews: resultReviews
+            })
+          );
         });
     });
 });
@@ -166,21 +162,17 @@ app.post("/item-details-tea", upload.none(), (req, res) => {
   db.collection("tea-items")
     .findOne({ _id: new ObjectID(itemId) })
     .then(item => {
-      db.collection("users")
-        .findOne({ _id: new ObjectID(sellerId) })
-        .then(seller => {
-          db.collection("reviews-items")
-            .find({ itemId: itemId })
-            .toArray((err, resultReviews) => {
-              if (err) throw err;
-              res.send(
-                JSON.stringify({
-                  success: true,
-                  item: item,
-                  reviews: resultReviews
-                })
-              );
-            });
+      db.collection("reviews-items")
+        .find({ itemId: itemId })
+        .toArray((err, resultReviews) => {
+          if (err) throw err;
+          res.send(
+            JSON.stringify({
+              success: true,
+              item: item,
+              reviews: resultReviews
+            })
+          );
         });
     });
 });
@@ -421,9 +413,10 @@ app.get("/cart", (req, res) => {
 
 app.post("/save-stripe-token", upload.none(), (req, res) => {
   console.log(req.body);
-  let token = req.body.stripeToken;
+  let token = req.body.token;
   console.log(token);
   // let price = request.body.amount;
+
   stripe.charges
     .create({
       amount: 300,
@@ -432,7 +425,7 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
       source: token
     })
     .then(response => {
-      console.log(response);
+      res.send(JSON.stringify({ success: true }));
     });
 });
 
