@@ -249,7 +249,7 @@ app.post("/add-item-coffee", upload.single("image"), (req, res) => {
 
 app.get("/search-item-coffee", (req, res) => {
   let search = req.query.search;
-  let regexSearch = new RegExp(search);
+  let regexSearch = new RegExp(search, "i");
   db.collection("coffee-items")
     .find({
       $or: [
@@ -265,7 +265,7 @@ app.get("/search-item-coffee", (req, res) => {
 
 app.get("/search-item-tea", (req, res) => {
   let search = req.query.search;
-  let regexSearch = new RegExp(search);
+  let regexSearch = new RegExp(search, "i");
   db.collection("tea-items")
     .find({
       $or: [
@@ -435,7 +435,7 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
                   name: item.name,
                   amount: parseInt(item.price) * 100,
                   description: item.description,
-                  quantity: item.quantity,
+                  quantity: 1,
                   currency: "cad",
                   images: [item.image]
                 };
