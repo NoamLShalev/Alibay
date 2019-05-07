@@ -297,6 +297,7 @@ app.post("/add-review-seller", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
   let review = req.body.review;
+
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
     .then(user => {
@@ -323,6 +324,7 @@ app.post("/add-review-item", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
   let review = req.body.review;
+
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
     .then(user => {
@@ -345,15 +347,84 @@ app.post("/add-review-item", upload.none(), (req, res) => {
     });
 });
 
-// app.post("/add-to-cart-coffee", upload.none(), (req, res) => {
-//   let itemId = req.body.itemId;
-//   let ObjectID = mongo.ObjectID;
+app.post("/add-to-cart-tea", upload.none(), (req, res) => {
+  let sessionId = req.cookies.sid;
+  let itemId = req.body.itemId;
+  let ObjectID = mongo.ObjectID;
 
-//   db.collection("coffee-items")
-//     .findOne({ _id: new ObjectID(itemId) })
-//     .then(item => {
-//       db.collection("cart").insertOne({ item });
-//     });
-// });
+  db.collection("tea-items")
+    .findOne({ _id: new ObjectID(itemId) })
+    .then(item => {
+      db.collection("sessions")
+        .findOne({ sessionId: sessionId })
+        .then(user => {
+          let username = user.username;
+          db.collection("users")
+            .findOne({ username: username })
+            .then(userInfo => {
+              db.collection("cart").insertOne(
+                { item: item, userId: userInfo._id },
+                (err, result) => {
+                  if (err) throw err;
+                  res.send(JSON.stringify({ success: true }));
+                }
+              );
+            });
+        });
+    });
+});
 
-app.listen(4000);
+app.post("/add-to-cart-coffee", upload.none(), (req, res) => {
+  let sessionId = req.cookies.sid;
+  let itemId = req.body.itemId;
+  let ObjectID = mongo.ObjectID;
+
+  db.collection("coffee-items")
+    .findOne({ _id: new ObjectID(itemId) })
+    .then(item => {
+      db.collection("sessions")
+        .findOne({ sessionId: sessionId })
+        .then(user => {
+          let username = user.username;
+          db.collection("users")
+            .findOne({ username: username })
+            .then(userInfo => {
+              db.collection("cart").insertOne(
+                { item: item, userId: userInfo._id },
+                (err, result) => {
+                  if (err) throw err;
+                  res.send(JSON.stringify({ success: true }));
+                }
+              );
+            });
+        });
+    });
+});
+
+app.get("/cart", (req, res) => {
+  let sessionId = req.cookies.sid;
+
+  db.collection("sessions")
+    .findOne({ sessionId: sessionId })
+    .then(user => {
+      let username = user.username;
+      db.collection("users")
+        .findOne({ username: username })
+        .then(userInfo => {
+          let userId = userInfo._id;
+          db.collection("cart")
+            .find({ userId: userId })
+            .toArray((err, result) => {
+              if (err) throw err;
+              let items = result.map(item => {
+                return item.item;
+              });
+              res.send(JSON.stringify({ success: true, items: items }));
+            });
+        });
+    });
+});
+
+app.listen(4000, () => {
+  console.log("4000");
+});
