@@ -4,6 +4,7 @@ let cors = require("cors");
 let cookieParser = require("cookie-parser");
 let MongoClient = require("mongodb").MongoClient;
 let mongo = require("mongodb");
+let stripe = require("stripe")("sk_test_x5gHDTvOcukvjpirrZwgbx5X00ovsBO0zU");
 let app = express();
 let upload = multer({
   dest: __dirname + "/uploads/"
@@ -32,7 +33,6 @@ app.post("/signup", upload.none(), (req, res) => {
   db.collection("users")
     .findOne({ username: username })
     .then(user => {
-      console.log(user);
       if (user !== null) {
         res.send(JSON.stringify({ success: false }));
         return;
@@ -291,8 +291,6 @@ app.get("/search-item-tea", (req, res) => {
     });
 });
 
-// app.post("/buy-item", upload.none(), (req, res) => {});
-
 app.post("/add-review-seller", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
@@ -423,6 +421,19 @@ app.get("/cart", (req, res) => {
             });
         });
     });
+});
+
+app.post("/save-stripe-token", upload.none(), (req, res) => {
+  let token = request.body.stripeToken; 
+  let price = request.body.amount
+  ​
+  stripe.charges.create({
+    amount: price,
+    currency: 'usd',
+    description: 'Example charge',
+    source: token,
+  });
+
 });
 
 app.listen(4000, () => {
