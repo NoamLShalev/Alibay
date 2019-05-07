@@ -412,20 +412,48 @@ app.get("/cart", (req, res) => {
 });
 
 app.post("/save-stripe-token", upload.none(), (req, res) => {
-  console.log(req.body);
-  let token = req.body.token;
-  console.log(token);
-  // let price = request.body.amount;
+  let sessionId = req.cookies.sid;
+  let items = undefined;
 
-  stripe.charges
-    .create({
-      amount: 300,
-      currency: "usd",
-      description: "Example charge",
-      source: token
-    })
-    .then(response => {
-      res.send(JSON.stringify({ success: true }));
+  db.collection("sessions")
+    .findOne({ sessionId: sessionId })
+    .then(user => {
+      let username = user.username;
+      db.collection("users")
+        .findOne({ username: username })
+        .then(userInfo => {
+          let userId = userInfo._id;
+          db.collection("cart")
+            .find({ userId: userId })
+            .toArray((err, result) => {
+              if (err) throw err;
+              let justItems = result.map(item => {
+                return item.item;
+              });
+              items = justItems.map(item => {
+                return {
+                  name: item.name,
+                  amount: parseInt(item.price) * 100,
+                  description: item.description,
+                  quantity: item.quantity,
+                  currency: "cad",
+                  images: [item.image]
+                };
+              });
+              stripe.checkout.sessions
+                .create({
+                  payment_method_types: ["card"],
+                  line_items: items,
+                  success_url: "http://locahost:3000/",
+                  cancel_url: "http://localhost:3000/"
+                })
+                .then(session => {
+                  res.send(
+                    JSON.stringify({ success: true, sessionId: session.id })
+                  );
+                });
+            });
+        });
     });
 });
 
