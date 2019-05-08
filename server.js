@@ -155,7 +155,6 @@ app.post("/item-details-coffee", upload.none(), (req, res) => {
         .find({ itemId: itemId })
         .toArray((err, resultReviews) => {
           if (err) throw err;
-          console.log(resultReviews);
           res.send(
             JSON.stringify({
               success: true,
@@ -178,7 +177,6 @@ app.post("/item-details-tea", upload.none(), (req, res) => {
         .find({ itemId: itemId })
         .toArray((err, resultReviews) => {
           if (err) throw err;
-          console.log(resultReviews);
           res.send(
             JSON.stringify({
               success: true,
@@ -293,7 +291,6 @@ app.get("/search-item-tea", (req, res) => {
 });
 
 app.post("/add-review-seller", upload.none(), (req, res) => {
-  console.log(req.body);
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
   let review = req.body.review;
@@ -323,7 +320,6 @@ app.post("/add-review-seller", upload.none(), (req, res) => {
 });
 
 app.post("/add-review-item", upload.none(), (req, res) => {
-  console.log(req.body);
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
   let review = req.body.review;
@@ -430,6 +426,35 @@ app.get("/cart", (req, res) => {
     });
 });
 
+<<<<<<< HEAD
+=======
+app.post("/remove-item", upload.none(), (req, res) => {
+  let sessionId = req.cookies.sid;
+  let itemId = req.body.itemId;
+  console.log(itemId);
+  let ObjectID = mongo.ObjectID;
+
+  db.collection("sessions")
+    .findOne({ sessionId: sessionId })
+    .then(user => {
+      let username = user.username;
+      db.collection("users")
+        .findOne({ username: username })
+        .then(userInfo => {
+          let userId = userInfo._id;
+          console.log("userId", userId);
+          db.collection("cart")
+            .deleteOne({
+              $and: [{ "item._id": new ObjectID(itemId) }, { userId: userId }]
+            })
+            .then(result => {
+              res.send(JSON.stringify({ success: true }));
+            });
+        });
+    });
+});
+
+>>>>>>> 6fc970faf8081cf50774f06763299111712afa6c
 app.get("/purchase", (req, res) => {
   let sessionId = req.cookies.sid;
   let items = undefined;
