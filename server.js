@@ -422,7 +422,7 @@ app.get("/cart", (req, res) => {
     });
 });
 
-app.post("/save-stripe-token", upload.none(), (req, res) => {
+app.get("/purchase", (req, res) => {
   let sessionId = req.cookies.sid;
   let items = undefined;
 
@@ -442,6 +442,7 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
                 return item.item;
               });
               items = justItems.map(item => {
+                console.log(item.image);
                 return {
                   name: item.name,
                   amount: parseInt(item.price) * 100,
@@ -458,8 +459,8 @@ app.post("/save-stripe-token", upload.none(), (req, res) => {
                     .create({
                       payment_method_types: ["card"],
                       line_items: items,
-                      success_url: "http://locahost:3000/",
-                      cancel_url: "http://localhost:3000/"
+                      success_url: "http://localhost:3000/",
+                      cancel_url: "http://localhost:3000/cart"
                     })
                     .then(session => {
                       res.send(
