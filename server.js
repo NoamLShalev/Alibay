@@ -188,7 +188,7 @@ app.post("/item-details-tea", upload.none(), (req, res) => {
     });
 });
 
-app.post("/add-item-tea", upload.single("image"), (req, res) => {
+app.post("/add-item-tea", upload.single("file"), (req, res) => {
   let sessionId = req.cookies.sid;
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
@@ -223,7 +223,7 @@ app.post("/add-item-tea", upload.single("image"), (req, res) => {
     });
 });
 
-app.post("/add-item-coffee", upload.single("image"), (req, res) => {
+app.post("/add-item-coffee", upload.single("file"), (req, res) => {
   let sessionId = req.cookies.sid;
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
