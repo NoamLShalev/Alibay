@@ -155,6 +155,7 @@ app.post("/item-details-coffee", upload.none(), (req, res) => {
         .find({ itemId: itemId })
         .toArray((err, resultReviews) => {
           if (err) throw err;
+          console.log(resultReviews);
           res.send(
             JSON.stringify({
               success: true,
@@ -177,6 +178,7 @@ app.post("/item-details-tea", upload.none(), (req, res) => {
         .find({ itemId: itemId })
         .toArray((err, resultReviews) => {
           if (err) throw err;
+          console.log(resultReviews);
           res.send(
             JSON.stringify({
               success: true,
@@ -291,6 +293,7 @@ app.get("/search-item-tea", (req, res) => {
 });
 
 app.post("/add-review-seller", upload.none(), (req, res) => {
+  console.log(req.body);
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
   let review = req.body.review;
@@ -322,6 +325,8 @@ app.post("/add-review-item", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
   let review = req.body.review;
+  let rating = req.body.rating;
+
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
     .then(user => {
@@ -333,7 +338,8 @@ app.post("/add-review-item", upload.none(), (req, res) => {
             {
               review: review,
               reviewer: { name: reviewer.username, id: reviewer._id },
-              itemId: itemId
+              itemId: itemId,
+              rating: rating
             },
             (err, result) => {
               if (err) throw err;
