@@ -297,6 +297,7 @@ app.post("/add-review-seller", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let sellerId = req.body.sellerId;
   let review = req.body.review;
+  let rating = req.body.rating;
 
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
@@ -309,7 +310,8 @@ app.post("/add-review-seller", upload.none(), (req, res) => {
             {
               review: review,
               reviewer: { name: reviewer.username, id: reviewer._id },
-              sellerId: sellerId
+              sellerId: sellerId,
+              rating: rating
             },
             (err, result) => {
               if (err) throw err;
@@ -428,35 +430,6 @@ app.get("/cart", (req, res) => {
     });
 });
 
-app.post("/remove-item", upload.none(), (req, res) => {
-  let sessionId = req.cookies.sid;
-  let itemId = req.body.itemId;
-  console.log(itemId);
-  let ObjectID = mongo.ObjectID;
-
-  db.collection("sessions")
-    .findOne({ sessionId: sessionId })
-    .then(user => {
-      let username = user.username;
-      db.collection("users")
-        .findOne({ username: username })
-        .then(userInfo => {
-          let userId = userInfo._id;
-          console.log("userId", userId);
-          db.collection("cart")
-            .deleteOne({
-              $and: [
-                { item: { _id: new ObjectID(itemId) } },
-                { userId: userId }
-              ]
-            })
-            .then(result => {
-              res.send(JSON.stringify({ success: true }));
-            });
-        });
-    });
-});
-
 app.get("/purchase", (req, res) => {
   let sessionId = req.cookies.sid;
   let items = undefined;
@@ -477,6 +450,7 @@ app.get("/purchase", (req, res) => {
                 return item.item;
               });
               items = justItems.map(item => {
+                console.log(item.image);
                 return {
                   name: item.name,
                   amount: parseInt(item.price) * 100,
