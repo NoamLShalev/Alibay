@@ -318,10 +318,10 @@ app.post("/add-review-seller", upload.none(), (req, res) => {
 });
 
 app.post("/add-review-item", upload.none(), (req, res) => {
+  console.log(req.body);
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
   let review = req.body.review;
-
   db.collection("sessions")
     .findOne({ sessionId: sessionId })
     .then(user => {
