@@ -426,8 +426,6 @@ app.get("/cart", (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 app.post("/remove-item", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
@@ -454,7 +452,6 @@ app.post("/remove-item", upload.none(), (req, res) => {
     });
 });
 
->>>>>>> 6fc970faf8081cf50774f06763299111712afa6c
 app.get("/purchase", (req, res) => {
   let sessionId = req.cookies.sid;
   let items = undefined;
