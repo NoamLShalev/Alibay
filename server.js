@@ -216,7 +216,7 @@ app.post("/add-item-tea", upload.single("file"), (req, res) => {
               description: itemDesc,
               quantity: quantity,
               image: imagePath,
-              sellerId: sellerId
+              sellerId: sellerId.toString()
             },
             (err, result) => {
               if (err) throw err;
@@ -254,7 +254,7 @@ app.post("/add-item-coffee", upload.single("file"), (req, res) => {
               description: itemDesc,
               quantity: quantity,
               image: imagePath,
-              sellerId: sellerId
+              sellerId: sellerId.toString()
             },
             (err, result) => {
               if (err) throw err;
