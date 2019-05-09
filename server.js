@@ -11,7 +11,7 @@ let upload = multer({
   dest: __dirname + "/uploads/"
 });
 app.use("/images", express.static(__dirname + "/uploads/"));
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true, origin: "http://159.89.112.34:3000" }));
 app.use(cookieParser());
 let url =
   "mongodb+srv://noam:alibay@practice-project-mqqcj.mongodb.net/test?retryWrites=true";
@@ -207,7 +207,7 @@ app.post("/add-item-tea", upload.single("file"), (req, res) => {
           let extension = file.originalname.split(".").pop();
           let newFileName = file.filename + "." + extension;
           fs.renameSync(file.path, __dirname + "/uploads/" + newFileName);
-          let imagePath = "http://localhost:4000/images/" + newFileName;
+          let imagePath = "http://159.89.112.34:4000/images/" + newFileName;
 
           db.collection("tea-items").insertOne(
             {
@@ -245,7 +245,7 @@ app.post("/add-item-coffee", upload.single("file"), (req, res) => {
           let extension = file.originalname.split(".").pop();
           let newFileName = file.filename + "." + extension;
           fs.renameSync(file.path, __dirname + "/uploads/" + newFileName);
-          let imagePath = "http://localhost:4000/images/" + newFileName;
+          let imagePath = "http://159.89.112.34/images/" + newFileName;
 
           db.collection("coffee-items").insertOne(
             {
@@ -496,8 +496,8 @@ app.get("/purchase", (req, res) => {
                     .create({
                       payment_method_types: ["card"],
                       line_items: items,
-                      success_url: "http://localhost:3000/",
-                      cancel_url: "http://localhost:3000/cart"
+                      success_url: "http://159.89.112.34:3000/",
+                      cancel_url: "http://159.89.112.34:3000/cart"
                     })
                     .then(session => {
                       res.send(
