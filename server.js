@@ -62,24 +62,38 @@ app.post("/signup", upload.none(), (req, res) => {
 app.post("/login", upload.none(), (req, res) => {
   let username = req.body.username;
   let enteredPassword = req.body.password;
-  db.collection("users")
-    .findOne({ username: username })
-    .then(user => {
-      let expectedPassword = user.password;
-      if (enteredPassword !== expectedPassword) {
-        res.send(JSON.stringify({ success: false }));
-        return;
+  db.collection("users").findOne({ username: username }, (err, result) => {
+    let expectedPassword = result.password;
+    if (enteredPassword !== expectedPassword) {
+      res.send(JSON.stringify({ success: false }));
+      return;
+    }
+    let sessionId = generateId();
+    res.cookie("sid", sessionId);
+    db.collection("sessions").insertOne(
+      { sessionId: sessionId, username: username },
+      (err, result) => {
+        if (err) throw err;
+        res.send(JSON.stringify({ success: true }));
       }
-      let sessionId = generateId();
-      res.cookie("sid", sessionId);
-      db.collection("sessions").insertOne(
-        { sessionId: sessionId, username: username },
-        (err, result) => {
-          if (err) throw err;
-          res.send(JSON.stringify({ success: true }));
-        }
-      );
-    });
+    );
+  });
+  // .then(user => {
+  //   let expectedPassword = user.password;
+  //   if (enteredPassword !== expectedPassword) {
+  //     res.send(JSON.stringify({ success: false }));
+  //     return;
+  //   }
+  //   let sessionId = generateId();
+  //   res.cookie("sid", sessionId);
+  //   db.collection("sessions").insertOne(
+  //     { sessionId: sessionId, username: username },
+  //     (err, result) => {
+  //       if (err) throw err;
+  //       res.send(JSON.stringify({ success: true }));
+  //     }
+  //   );
+  // });
 });
 
 app.get("/login-check", (req, res) => {
