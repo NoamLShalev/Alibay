@@ -4,6 +4,7 @@ let cors = require("cors");
 let cookieParser = require("cookie-parser");
 let MongoClient = require("mongodb").MongoClient;
 let mongo = require("mongodb");
+let fs = require("fs");
 let stripe = require("stripe")("sk_test_x5gHDTvOcukvjpirrZwgbx5X00ovsBO0zU");
 let app = express();
 let upload = multer({
@@ -203,7 +204,10 @@ app.post("/add-item-tea", upload.single("file"), (req, res) => {
           let quantity = req.body.quantity;
           let sellerId = seller._id;
           let file = req.file;
-          let imagePath = "http://localhost:4000/images/" + file.filename;
+          let extension = file.originalname.split(".").pop();
+          let newFileName = file.filename + "." + extension;
+          fs.renameSync(file.path, __dirname + "/uploads/" + newFileName);
+          let imagePath = "http://localhost:4000/images/" + newFileName;
 
           db.collection("tea-items").insertOne(
             {
@@ -238,7 +242,10 @@ app.post("/add-item-coffee", upload.single("file"), (req, res) => {
           let quantity = req.body.quantity;
           let sellerId = seller._id;
           let file = req.file;
-          let imagePath = "http://localhost:4000/images/" + file.filename;
+          let extension = file.originalname.split(".").pop();
+          let newFileName = file.filename + "." + extension;
+          fs.renameSync(file.path, __dirname + "/uploads/" + newFileName);
+          let imagePath = "http://localhost:4000/images/" + newFileName;
 
           db.collection("coffee-items").insertOne(
             {
@@ -426,8 +433,6 @@ app.get("/cart", (req, res) => {
     });
 });
 
-<<<<<<< HEAD
-=======
 app.post("/remove-item", upload.none(), (req, res) => {
   let sessionId = req.cookies.sid;
   let itemId = req.body.itemId;
@@ -454,7 +459,6 @@ app.post("/remove-item", upload.none(), (req, res) => {
     });
 });
 
->>>>>>> 6fc970faf8081cf50774f06763299111712afa6c
 app.get("/purchase", (req, res) => {
   let sessionId = req.cookies.sid;
   let items = undefined;
