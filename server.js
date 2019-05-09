@@ -518,6 +518,4 @@ app.get("/logout", (req, res) => {
   res.send(JSON.stringify({ success: true }));
 });
 
-app.listen(4000, () => {
-  console.log("the server is launched on port: 4000");
-});
+app.listen(4000, "0.0.0.0");
