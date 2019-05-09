@@ -61,10 +61,13 @@ app.post("/signup", upload.none(), (req, res) => {
 
 app.post("/login", upload.none(), (req, res) => {
   let username = req.body.username;
+  console.log("username", username);
   let enteredPassword = req.body.password;
+  console.log("password", enteredPassword);
   db.collection("users")
     .findOne({ username: username })
     .then(user => {
+      console.log("user", user);
       let expectedPassword = user.password;
       if (enteredPassword !== expectedPassword) {
         res.send(JSON.stringify({ success: false }));
