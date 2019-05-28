@@ -1,0 +1,81 @@
+#footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  height: 1.5rem;
+  border-top: 0.5px solid rgb(204, 153, 51);
+  /* background-color: rgb(204, 153, 51, 0.1); */
+  color: rgb(204, 153, 51);
+  padding: 0;
+  margin: 20px;
+}
+
+.image {
+  width: 100%;
+  text-align: center;
+}
+
+.imageOne {
+  margin: 10px;
+}
+
+.first {
+  background-color: rgb(204, 153, 51, 0.1);
+  padding: 0;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 10px;
+}
+
+.para {
+  padding: 30px;
+}
+
+.link {
+  text-decoration: none;
+  color: rgb(204, 153, 51);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.link:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.contact {
+  color: rgb(204, 153, 51);
+  text-align: center;
+  font-weight: bold;
+}
+
+.contact h2 {
+  font-size: 40px;
+  padding-bottom: 10px;
+  margin: 10px;
+}
+
+.contact li {
+  margin: 10px;
+  font-weight: 300;
+}
+
+.contact button {
+  padding: 10px;
+  bottom: 0;
+  font-weight: 300;
+  margin-top: 50px;
+  width: 25%;
+  border-radius: 2px;
+  background-color: rgb(204, 153, 51, 0.1);
+  color: rgb(204, 153, 51);
+  border-color: rgb(204, 153, 51, 0.1);
+}
+
+.contact button:hover {
+  border-color: rgb(204, 153, 51, 0.4);
+}

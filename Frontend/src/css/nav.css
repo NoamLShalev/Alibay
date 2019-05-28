@@ -1,0 +1,104 @@
+.cart-image {
+  height: 30px;
+  width: 50px;
+}
+
+.bar {
+  display: flex;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 0.1px solid grey;
+  height: 90px;
+  color: black;
+}
+
+.bar-items {
+  display: flex;
+}
+
+.nav-button {
+  text-decoration: none;
+  color: black;
+  font-size: 16px;
+}
+
+.nav-button:hover,
+.logout-button:hover,
+.drop-button:hover {
+  color: #999933;
+}
+
+.sell-item,
+.logout,
+.cart-button,
+.dropdown {
+  padding: 30px;
+}
+
+.cart-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.cart-link {
+  border-left: 1px solid black;
+  padding-left: 30px;
+  padding-right: 25px;
+}
+
+.sell-item {
+  margin-top: 10px;
+}
+
+.logout-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-radius: 2px;
+  margin-top: 0px;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.drop-button {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  border-radius: 2px;
+  font-size: 16px;
+  cursor: pointer;
+  color: black;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 88px;
+  z-index: 1;
+}
+
+.drop-link {
+  color: black;
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  box-shadow: 4px 12px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.drop-link:hover {
+  background-color: rgba(204, 153, 51, 0.2);
+}

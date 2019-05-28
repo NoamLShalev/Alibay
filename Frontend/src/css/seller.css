@@ -1,0 +1,30 @@
+.border-seller {
+  padding-bottom: 15px;
+  border-bottom: 2px dotted black;
+  margin-bottom: 10px;
+}
+
+.seller-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: justify;
+  max-width: 500px;
+  margin: 36px auto;
+  padding: 30px;
+  background-color: white;
+  font-size: 18px;
+  line-height: 30pt;
+  box-shadow: 4px 12px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+.review-title {
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+.sell-title {
+  margin: 20px;
+  font-size: 25px;
+}
